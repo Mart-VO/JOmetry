@@ -112,6 +112,19 @@ def dist(a, b):
     return float("inf")
 
 def inverse_m(m):
+    if len(m) == 2:
+        l1, l2 = m
+        a, b, c, d = *l1, *l2
+        det = 1/(a*d - b*c)
+        return [[det*d, -det*b],[-det*c, det*a]]
+    if len(m) == 3:
+        l1, l2, l3 = m
+        a,b,c, d,e,f, g,h,i = *l1, *l2, *l3
+        det = a*e*i + b*f*g + c*d*h − c*e*g − f*h*a − i*b*d
+        mat = [[e*i-f*h, c*h-b*i, b*f-c*e],
+               [f*g-d*i, a*i-c*g, c*d-a*f],
+               [d*h-e*g, b*g-a*h, a*e-b*d]]
+        return [[x/det for x in l] for l in mat]
     return numpy.linalg.inv(m)
 
 def multi_matrix2(m1, m2):
