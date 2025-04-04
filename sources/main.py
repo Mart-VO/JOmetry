@@ -589,7 +589,9 @@ class Main:
         return self.action('Creature', self.plans[0], 'Point', nom = 1, method = 'milieu', args = (A, B), u = 1)
      
     def centre(self):
-        self.plans[0].newCentre(1, self.liste_derniers_clics)
+        C = self.liste_derniers_clics
+        plan = self.plans[0]
+        return self.action('Creature', plan, 'Point', nom = 1, method = 'centre', args = (C, plan.U, plan.V), u = 1)
 
     def para(self):
         d, A = self.liste_derniers_clics
