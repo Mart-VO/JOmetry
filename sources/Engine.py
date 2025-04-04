@@ -25,7 +25,8 @@ def txt(x):
     if isinstance(x, (tuple, list)):
         return '[' + ','.join(map(txt, x)) + ']'
     if isinstance(x, dict):
-        return '{'+','.join([f'{txt(a)}:{txt(x[a])}' for a in x])+'}'
+        texte = ','.join([f'{txt(a)}:{txt(x[a])}' for a in x])
+        return '{' + texte + '}'
     if x is None:
         return '!R!'
     raise ValueError
@@ -151,7 +152,8 @@ def translater(args, v):
 def homothetie(p, c, rapport):
     x, y, z = c
     k = [[rapport, 0, 0], [0, rapport, 0], [0, 0, 1]]
-    return translation(multi_matrix(translation(p, (c, (0,0,z))), k), ((0,0,z), c))
+    t = multi_matrix(translation(p, (c, (0,0,z))), k)
+    return translation(t, ((0,0,z), c))
 
 def homotheter(args, p, rapport):
     nouv_args = []
@@ -180,8 +182,10 @@ def gravite(a,b,c):
     return inter(inter(a, milieu(b,c)), inter(b, milieu(a,c)))
     
 def fermat(a,b,c):
-    A = inter(inter(a, rotation(b,c, pi/3)), inter(b, rotation(c,a, pi/3)))
-    B = inter(inter(a, rotation(b,c, -pi/3)), inter(b, rotation(c,a, -pi/3)))
+    A = inter(inter(a, rotation(b,c, pi/3)),
+              inter(b, rotation(c,a, pi/3)))
+    B = inter(inter(a, rotation(b,c, -pi/3)),
+              inter(b, rotation(c,a, -pi/3)))
     x1,y1,z1 = inter(b,c)
     x2,y2,z2 = inter(c,a)
     x3,y3,z3 = inter(a,b)
