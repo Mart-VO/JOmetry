@@ -25,7 +25,7 @@ def txt(x):
     if isinstance(x, (tuple, list)):
         return '[' + ','.join(map(txt, x)) + ']'
     if isinstance(x, dict):
-        return '{' + ','.join([f'{txt(a)}:{txt(x[a])}' for a in x]) + '}'
+        return '{'+','.join([f'{txt(a)}:{txt(x[a])}' for a in x])+'}'
     if x is None:
         return '!R!'
     raise ValueError
@@ -34,7 +34,8 @@ def crea_id(x, sens = 0, plan = None):
     if isinstance(x, (tuple, list)):
         return [crea_id(e, sens, plan) for e in x]
     if isinstance(x, dict):
-        return {crea_id(c, sens, plan):crea_id(v, sens, plan) for c, v in x.items()}
+        return {crea_id(c, sens, plan):
+                crea_id(v, sens, plan) for c, v in x.items()}
     if isinstance(x, Creature) and sens == 1:
         return x.ide
     if isinstance(x, ID) and sens == -1:
@@ -74,7 +75,8 @@ def val(x, objets = None):
         l.append(ec)
         if n != 0: raise ValueError
         if (x[0], x[-1]) == ('{','}'):
-            return {val(l[2*i], objets):val(l[2*i+1], objets) for i in range(len(l)//2)}
+            return {val(l[2*i], objets):
+                    val(l[2*i+1], objets) for i in range(len(l)//2)}
         return [val(i, objets) for i in l]
     if (x[0], x[-1]) == ('!','!'):
         t, typ = x[2:-1], x[1]
