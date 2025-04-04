@@ -889,6 +889,11 @@ def media(A, B):
     d, p = inter(A, B), milieu(A, B)
     return perp(d, p)
 
+def centre(C, U, V):
+    d1 = tangente(C, U)
+    d2 = tangente(C, V)
+    return inter(d1, d2)
+
 def tangente(C, p):
     '''Calcule la tangente en p à la courbe C, 
     et p n'est pas obligé de se trouver sur C'''
