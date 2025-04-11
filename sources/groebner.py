@@ -277,22 +277,27 @@ class Polynome:
                         break
                 deb = m
             x = deb
+            newton, i = 1, 0
             while True:
+                i += 1
                 d = self(x) / derivee(x)
-                if d < 1e-15:
+                if abs(d) < 1e-15:
                     break
                 x -= d
-                if not inter[0] <= x <= inter[1]:
-                    print('aie')
-                    x = deb
-                    inf, sup = inter[0], inter[1]
-                    if inf != -float('inf') and sup != float('inf'):
-                        for i in range(100):
-                            if self(x)*self(inf) <= 0:
-                                x = (x + inf)/2
-                                sup = x
-                            else:
-                                x, inf = (x + sup)/2, x
+                if not inter[0] <= x <= inter[1] or i >= 10000:
+                    newton = 0
+                    break
+            if not newton:
+                print('aie')
+                x = deb
+                inf, sup = inter[0], inter[1]
+                if inf != -float('inf') and sup != float('inf'):
+                    for i in range(1000):
+                        if self(x)*self(inf) <= 0:
+                            x = (x + inf)/2
+                            sup = x
+                        else:
+                            x, inf = (x + sup)/2, x
             solutions.append(x)
         return solutions, maximas
 
