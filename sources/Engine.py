@@ -210,8 +210,11 @@ def fermat(a,b,c):
 
 def rotation(p, c, theta):
     a, b, c = c
-    k = [[cos(theta), sin(theta), 0], [sin(-theta), cos(-theta), 0], [0, 0, 1]]
-    return translation(multi_matrix(translation(p, ((a,b,c), (0,0,c))), k), ((0,0,c), (a,b,c)))
+    k = [[cos(theta), sin(theta), 0],
+         [sin(-theta), cos(-theta), 0],
+         [0, 0, 1]]
+    v = multi_matrix(translation(p, ((a,b,c), (0,0,c))), k)
+    return translation(v, ((0,0,c), (a,b,c)))
 
 def rotater(args, p, theta):
     nouv_args = []
@@ -504,7 +507,7 @@ class Creature:
         method = self.method
         args = self.args
         deg = self.deg
-        if method in {"inter","interpol", "cubic", "harmonique", "milieu"}:
+        if method in {'inter', 'interpol', 'cubic', 'harmonique', 'milieu'}:
             s = args[0].relation_enfant
             for i in args[1:]:
                 s &= i.relation_enfant
@@ -629,7 +632,7 @@ class Creature:
         h, w = can.winfo_height(), can.winfo_width()
         defocaliser = self.plan.main.coord_canvas
         (x1, y1), (x2, y2) = defocaliser(0, 0), defocaliser(w, h)
-        w,h = x2-x1, y2-y1
+        w, h = x2-x1, y2-y1
         self.tkinter=[None, None]
         
         
@@ -703,7 +706,7 @@ class Creature:
                         if dist(p, a_p) < 50:
                             z=can.create_line(p[0], p[1], a_p[0], a_p[1], width = self.plan.boldP, fill = self.color, tag = self.ide)
                             self.tkinter.append(z)
-                            self.plan.tkinter_object[z]=self
+                            self.plan.tkinter_object[z]=self                            
             can.tag_lower(self.ide, 'limite2')
 
         if self.classe_actuelle == 'Droite' or (self.classe_actuelle == 'Courbe' and self.deg_actu == 1):
@@ -854,6 +857,7 @@ def inter2(courbe1, courbe2, numero, copains1 = None, copains2 = None, z = 1):
             if racines != []:
                 root2[racines.index(min(racines, key=lambda x : dist(norm(x), norm(i.coords()))))] = i
                 racines[racines.index(min(racines, key=lambda x : dist(norm(x), norm(i.coords()))))] = (0,0,0)
+    racines.sort(key=lambda x: 1 if x==(0,0,0) else 0)
     if numero == -1:
         return racines + list(root2.values())
     if numero < len(racines):
