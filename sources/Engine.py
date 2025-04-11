@@ -26,8 +26,8 @@ def txt(x):
     if isinstance(x, (tuple, list)):
         return '[' + ','.join(map(txt, x)) + ']'
     if isinstance(x, dict):
-        texte = ','.join([f'{txt(a)}:{txt(x[a])}' for a in x])
-        return '{' + texte + '}'
+        l = (f'{txt(a)}:{txt(x[a])}' for a in x)
+        return '{' + ','.join(l) + '}'
     if x is None:
         return '!R!'
     raise ValueError
@@ -36,8 +36,8 @@ def crea_id(x, sens = 0, plan = None):
     if isinstance(x, (tuple, list)):
         return [crea_id(e, sens, plan) for e in x]
     if isinstance(x, dict):
-        return {crea_id(c, sens, plan):
-                crea_id(v, sens, plan) for c, v in x.items()}
+        return {crea_id(c,sens,plan):crea_id(v,sens,plan)
+                for c, v in x.items()}
     if isinstance(x, Creature) and sens == 1:
         return x.ide
     if isinstance(x, ID) and sens == -1:
@@ -195,7 +195,8 @@ def inscrit(a,b,c):
     return centreInscrit(a,b,c)
 
 def gravite(a,b,c):
-    return inter(inter(a, milieu(b,c)), inter(b, milieu(a,c)))
+    m1, m2 = inter(a, milieu(b,c)), inter(b, milieu(a,c))
+    return inter(m1, m2)
     
 def fermat(a,b,c):
     A = inter(inter(a, rotation(b,c, pi/3)),
