@@ -13,7 +13,8 @@ class ID(int): pass
 def txt(x):
     '''transforme une valeur en chaîne de caractères
     pour la sauvegarde dans un fichier'''
-    if isinstance(x, str): return f"!T{x.replace('!','!!')}!"
+    if isinstance(x, str):
+        return f"!T{x.replace('!','!!')}!"
     if isinstance(x, bool):
         return f'!B{1 if x else 0}!'
     if isinstance(x, (int, float)):
@@ -76,8 +77,9 @@ def val(x, objets = None):
         l.append(ec)
         if n != 0: raise ValueError
         if (x[0], x[-1]) == ('{','}'):
-            return {val(l[2*i], objets):
-                    val(l[2*i+1], objets) for i in range(len(l)//2)}
+            ind = ((2*i, 2*i+1) for i in range(len(l)//2))
+            return {val(l[i1], objets):
+                    val(l[i2], objets) for i1, i2 in ind}
         return [val(i, objets) for i in l]
     if (x[0], x[-1]) == ('!','!'):
         t, typ = x[2:-1], x[1]
@@ -154,7 +156,7 @@ def translater(args, v):
     nouv_args = []
     for i in args:
         if i[0] == 'Point':
-            nouv_args.append(('Point', translation(i[1], v)))
+            nouv_args.append(('Point',translation(i[1],v)))
         elif i[0] == 'Droite':
             nouv_args.append(i)
             #à modifier
@@ -174,7 +176,8 @@ def homotheter(args, p, rapport):
         p = p.coords()
     for i in args:
         if i[0] == 'Point':
-            nouv_args.append(('Point', homothetie(i[1], p, rapport)))
+            a = ('Point', homothetie(i[1], p, rapport))
+            nouv_args.append(a)
         elif i[0] == 'Droite':
             nouv_args.append(i)
             #à modifier
