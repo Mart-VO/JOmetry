@@ -1122,6 +1122,12 @@ def cercle(d, O, A, U, V):
     d1, d2 = inter(O, U), inter(O, V)
     return CAtan2(d, d1, d2, A, U, V)
 
+def cercle_inscr(d, p1, p2, p3, U, V):
+    centre, cote = centreInscrit(p1, p2, p3), inter(p1, p2)
+    point = ProjOrtho(cote, centre)
+    return cercle(d, centre, point, U, V)
+        
+
 ###################################
 ###         Classe Plan         ###
 ###################################
