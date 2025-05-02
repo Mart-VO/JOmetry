@@ -158,8 +158,19 @@ def translater(args, v):
         if i[0] == 'Point':
             nouv_args.append(('Point',translation(i[1],v)))
         elif i[0] == 'Droite':
-            nouv_args.append(i)
-            #à modifier
+            #ax+by+cz=0
+            a,b,c=i[1]
+            if a==0:
+                point1 = (0, -c/b ,1)
+                point2 = (1, -c/b, 1)
+            elif b==0:
+                point1 = (-c/a, 0, 1)
+                point2 = (-c/a, 1, 1)
+            else:
+                point1 = (b, -a,0)
+                point2 = (0, c, -b)
+            salut = inter(translation(point1, v), translation(point2, v))
+            nouv_args.append(('Droite', salut))
         else:
             nouv_args.append(i)
     return nouv_args
@@ -179,8 +190,19 @@ def homotheter(args, p, rapport):
             a = ('Point', homothetie(i[1], p, rapport))
             nouv_args.append(a)
         elif i[0] == 'Droite':
-            nouv_args.append(i)
-            #à modifier
+            #ax+by+cz=0
+            a,b,c=i[1]
+            if a==0:
+                point1 = (0, -c/b ,1)
+                point2 = (1, -c/b, 1)
+            elif b==0:
+                point1 = (-c/a, 0, 1)
+                point2 = (-c/a, 1, 1)
+            else:
+                point1 = (b, -a,0)
+                point2 = (0, c, -b)
+            salut = inter(homothetie(point1, p, rapport), homothetie(point2, p, rapport))
+            nouv_args.append(('Droite', salut))
         else:
             nouv_args.append(i)
     return nouv_args
@@ -228,7 +250,19 @@ def rotater(args, p, theta):
         if i[0] == 'Point':
             nouv_args.append(('Point', rotation(i[1], p, theta)))
         elif i[0] == 'Droite':
-            nouv_args.append(('Droite', rotater(i[1], p, theta)))
+            #ax+by+cz=0
+            a,b,c=i[1]
+            if a==0:
+                point1 = (0, -c/b ,1)
+                point2 = (1, -c/b, 1)
+            elif b==0:
+                point1 = (-c/a, 0, 1)
+                point2 = (-c/a, 1, 1)
+            else:
+                point1 = (b, -a,0)
+                point2 = (0, c, -b)
+            salut = inter(rotation(point1, p, theta), rotation(point2, p, theta))
+            nouv_args.append(('Droite', salut))
         else:
             nouv_args.append(i)
     return nouv_args
